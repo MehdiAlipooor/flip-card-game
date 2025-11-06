@@ -10,7 +10,7 @@ export function generateRandomTiles(){
     }
   })
 
-  return [...appendRandomId, ...appendRandomId]
+  return appendRandomId
 }
 
 

@@ -1,7 +1,7 @@
 import './App.css'
 import './styles/tiles.css'
 import { type Tile } from './constants'
-import { useEffect,  useRef, useState } from 'react';
+import { useEffect,  useMemo,  useRef, useState } from 'react';
 import { generateRandomTiles } from './utils';
 import { useTimer } from './hooks';
 
@@ -15,7 +15,7 @@ type SelectedItems = {
 }
 
 function App() {
-  const tiles = generateRandomTiles() 
+  const tiles = useMemo(() => generateRandomTiles(),[]) 
 
   const {startTimer: startTime, isFinished} = useTimer(ALLOWABLE_TIME);
 
