@@ -2,7 +2,7 @@ import "./App.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TileCard } from "./components";
 import type { TileType } from "./constants";
-import { useTimer } from "./hooks";
+import { useStartGame, useTimer } from "./hooks";
 import { generateRandomTiles } from "./utils";
 import { GAME_CONFIG } from "./config";
 
@@ -26,7 +26,7 @@ function App() {
 	>([]);
 	const [selectedTiles, setSelectedTiles] = useState<SelectedItems | null>(null);
 
-  const [isInitialViewActive, setIsInitialViewActive] = useState(false)
+ const {isInitialViewActive, onStart} = useStartGame(isRunning, startTime)
 
 	const clickCountRef = useRef(0);
 
@@ -140,16 +140,7 @@ function App() {
 	const tilesList = tiles.map(renderTileItem);
 
   const handleStart = () =>{
-    if(isRunning){
-      return
-    }
-
-    setIsInitialViewActive(true)
-    setTimeout(() => {
-      setIsInitialViewActive(false)
-    }, 3000);
-
-    startTime();
+    onStart();
   }
 
 	return (

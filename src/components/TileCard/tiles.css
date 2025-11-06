@@ -1,48 +1,48 @@
 .wrapper {
-  gap: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  width: calc((12px * 3) + 800px);
-  justify-content: center;
+	gap: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	width: calc((12px * 3) + 800px);
+	justify-content: center;
 }
 
 .tile {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-  cursor: pointer;
+	width: 200px;
+	height: 200px;
+	position: relative;
+	transform-style: preserve-3d;
+	transition: transform 0.6s;
+	cursor: pointer;
 }
 
 .tile.flipped {
-  transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .tile-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 8px;
-  overflow: hidden;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+	border-radius: 8px;
+	overflow: hidden;
 }
 
 /* Back side (hidden state) */
 .tile-back {
-  background-color: rgb(78, 10, 10);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	background-color: rgb(78, 10, 10);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* Front side (visible image) */
 .tile-front {
-  transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .tile-front img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
