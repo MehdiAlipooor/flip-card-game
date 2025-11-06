@@ -13,10 +13,8 @@ export function TileCard({ onClick, isActive, icon, isDisabled }: Props) {
 			className={`tile ${isActive ? "flipped" : ""}`}
 			onClick={() => !isDisabled && onClick()}
 		>
-			{/* Back side (hidden side) */}
 			<div className="tile-face tile-back" />
 
-			{/* Front side (image) */}
 			<div className="tile-face tile-front">
 				<img src={icon} alt="tile icon" />
 			</div>
