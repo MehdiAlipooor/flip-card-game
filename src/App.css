@@ -1,21 +1,74 @@
 #root {
-	max-width: 1280px;
 	margin: 0 auto;
-	padding: 2rem;
-	text-align: center;
+	padding: 0;
 }
 
 .body {
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+	flex-direction: row-reverse;
 	gap: 48px;
+	position: relative;
+	overflow: hidden;
+}
+.body::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	background: linear-gradient(to left, #e8d1a9 50%, #e8d1a929, transparent);
+	transition: all ease 1s;
+}
+
+.body.active .control-section{
+	transform: translateX(100%);
+	transition: all ease 1s;
+	width: 0;
+	z-index: -100;
+}
+.body.active .control-section p,
+.body.active .control-section button{
+	display: none;
+}
+.body.active::after{
+	content: "";
+	transform: translateX(100%);
+	z-index: 10;
+	background: linear-gradient(to left, #e8d1a9 50%, #e8d1a929, transparent);
+}
+
+.control-section{
+	width: 40%;
+	height: 100%;
+	position: relative;
+	z-index: 100;
+	padding-right: 42px;
+}
+
+.inner{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.inner p{
+	font-size: 42px;
+	columns: #090909;
 }
 
 .body button {
-	padding: 12px 24px;
+	padding: 12px 42px;
 	border: 1px solid red;
+	border-right: 3px solid red;
+	border-bottom: 3px solid red;
 	color: red;
 	background-color: transparent;
+	font-weight: 500;
+	font-size: 24px;
+	border-radius: 3px;
+	cursor: pointer;
+	max-width: max-content;
 }

@@ -1,14 +1,30 @@
+:root {
+	--tiles-wrapper-gap: 12px;
+}
+
 .wrapper {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
 	gap: 12px;
-	display: flex;
-	flex-wrap: wrap;
-	width: calc((12px * 3) + 800px);
-	justify-content: center;
+	width: min(90vw, 90vh);
+	aspect-ratio: 1 / 1;
+}
+
+.wrapper {
+	width: min(90vw, 80vh);
+	aspect-ratio: 1 / 1;
+	margin: auto;
+	box-sizing: border-box;
+	margin: 0 auto;
+
+	box-sizing: border-box;
+	max-width: 90%;
 }
 
 .tile {
-	width: 200px;
-	height: 200px;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 	position: relative;
 	transform-style: preserve-3d;
 	transition: transform 0.6s;
@@ -28,15 +44,15 @@
 	overflow: hidden;
 }
 
-/* Back side (hidden state) */
 .tile-back {
-	background-color: rgb(78, 10, 10);
+	background: url("assets/images/placeholder-2.png") center no-repeat;
+	background-size: cover;
 	display: flex;
+	border-radius: 12px;
 	align-items: center;
 	justify-content: center;
 }
 
-/* Front side (visible image) */
 .tile-front {
 	transform: rotateY(180deg);
 }
