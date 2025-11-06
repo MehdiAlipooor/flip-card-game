@@ -1,0 +1,3 @@
+- Bug =>  fix: fix:message
+- Feature => feat:message 
+- Test => test: component name/component path

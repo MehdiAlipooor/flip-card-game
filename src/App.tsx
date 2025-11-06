@@ -1,8 +1,9 @@
 import './App.css'
 import './styles/tiles.css'
 import { type Tile } from './constants'
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect,  useRef, useState } from 'react';
 import { generateRandomTiles } from './utils';
+import { useTimer } from './hooks';
 
 const POSSIBLE_ACTIONS = 20;
 const ALLOWABLE_TIME = 10
@@ -13,34 +14,10 @@ type SelectedItems = {
   itemTwo: TileItem
 }
 
-let timerInterval: ReturnType<typeof setInterval>
-
-function useTimer(initialTimeout: number){
-    const [time, setTime] = useState(initialTimeout)
-
-    function startTime(){
-      timerInterval = setInterval(() => {
-        setTime((prev)=> {
-          if(prev === 0){
-            clearInterval(timerInterval)
-            return 0
-          }
-
-          return prev -1
-        })
-      }, 1000);
-    }
-
-    const isFinished = useMemo(() => time === 0,[time])
-
-    return { time, startTime, isFinished}
-}
-
 function App() {
   const tiles = generateRandomTiles() 
 
-  const {time, startTime, isFinished} = useTimer(ALLOWABLE_TIME);
-
+  const {startTimer: startTime, isFinished} = useTimer(ALLOWABLE_TIME);
 
   const [correctSelectedItem, setCorrectSelectedItems] = useState<SelectedItems[] | []>([])
   const [clickedItems, setClickedItems] = useState<SelectedItems | null>(null)
