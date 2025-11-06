@@ -1,8 +1,8 @@
 
-export type Tile = {
+export type TileType = {
     icon: string,
 }
-export const tiles: Tile[] = [
+export const tiles: TileType[] = [
     {
         icon: '/assets/images/product-1.jpg'
     },

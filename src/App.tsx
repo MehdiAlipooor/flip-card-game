@@ -1,14 +1,14 @@
 import './App.css'
-import './styles/tiles.css'
-import { type Tile } from './constants'
 import { useEffect,  useMemo,  useRef, useState } from 'react';
 import { generateRandomTiles } from './utils';
 import { useTimer } from './hooks';
+import type { TileType } from './constants';
+import { TileCard } from './components';
 
 const POSSIBLE_ACTIONS = 20;
 const ALLOWABLE_TIME = 10
 
-type TileItem = Tile & {id: number}
+type TileItem = TileType & {id: number}
 type SelectedItems = {
   itemOne: TileItem,
   itemTwo: TileItem
@@ -85,24 +85,23 @@ function App() {
     return correctSelectedItem.filter((f) => f.itemOne.id === index ||f.itemTwo.id === index)
   }
 
-  const renderTileItem = (item: TileItem, index: number) => {
+    const renderTileItem = (item: TileItem, index: number) => {
     const isCorrectlySelected = isItemCorrect(index);
     
     const isImageSelected = clickedItems?.itemOne?.id === index ||
       clickedItems?.itemTwo?.id === index || isCorrectlySelected?.length
     
-    return <div 
+    return <TileCard
       key={index}
-      className={`tile ${isImageSelected ? '': 'invisible'}`}
+      isActive={isImageSelected}
+      icon={item.icon}
       onClick={() => {
         if(checkPreviousCorrection(item.icon)){
           return
         }
         onTileClickHandler({...item, id: index})
       }}
-     >
-      <img src={item.icon}/>
-    </div>
+    />
   }
 
   function handleStart(){  
@@ -120,8 +119,6 @@ function App() {
   </div>
 }
 
-function TileItem(){
-  return <div></div>
-}
+
 
 export default App
