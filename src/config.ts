@@ -1,0 +1,5 @@
+
+export const GAME_CONFIG = {
+    POSSIBLE_ACTIONS:20,
+    ALLOWABLE_TIME:40
+}

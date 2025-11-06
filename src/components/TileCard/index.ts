@@ -1,1 +1,1 @@
-export * from './TileCard'
+export * from "./TileCard";

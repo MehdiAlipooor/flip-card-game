@@ -1,30 +1,29 @@
-
 export type TileType = {
-    icon: string,
-}
+	icon: string;
+};
 export const tiles: TileType[] = [
-    {
-        icon: '/assets/images/product-1.jpg'
-    },
-    {
-        icon: '/assets/images/product-2.jpg'
-    },
-    {
-        icon: '/assets/images/product-3.jpg'
-    },
-    {
-        icon: '/assets/images/product-4.jpg'
-    },
-    {
-        icon: '/assets/images/product-5.jpg'
-    },
-    {
-        icon: '/assets/images/product-6.jpg'
-    },
-    {
-        icon: '/assets/images/product-7.jpg'
-    },
-    {
-        icon: '/assets/images/product-8.jpg'
-    }
-]
+	{
+		icon: "/assets/images/product-1.jpg",
+	},
+	{
+		icon: "/assets/images/product-2.jpg",
+	},
+	{
+		icon: "/assets/images/product-3.jpg",
+	},
+	{
+		icon: "/assets/images/product-4.jpg",
+	},
+	{
+		icon: "/assets/images/product-5.jpg",
+	},
+	{
+		icon: "/assets/images/product-6.jpg",
+	},
+	{
+		icon: "/assets/images/product-7.jpg",
+	},
+	{
+		icon: "/assets/images/product-8.jpg",
+	},
+];
