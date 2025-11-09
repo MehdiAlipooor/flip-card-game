@@ -1,0 +1,23 @@
+.button {
+	padding: 12px 42px;
+
+	background-color: transparent;
+	font-weight: 500;
+	font-size: 24px;
+	border-radius: 3px;
+	cursor: pointer;
+	max-width: max-content;
+}
+
+.button.danger {
+	border: 1px solid var(--danger);
+	border-right: 3px solid var(--danger);
+	border-bottom: 3px solid var(--danger);
+	color: var(--danger);
+}
+.button.success {
+	border: 1px solid var(--success);
+	border-right: 3px solid var(--success);
+	border-bottom: 3px solid var(--success);
+	color: var(--success);
+}

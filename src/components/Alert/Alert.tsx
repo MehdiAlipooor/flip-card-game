@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import "./styles.css";
-import { useAlert } from "../../context/AlertContex";
+import { useAlert } from "../../context";
+import { Button } from "../Button";
 
 export const Alert = () => {
 	const { alert, visible, hideAlert } = useAlert();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		if (visible) {
-			setTimeout(() => setOpen(true), 20);
-		} else {
-			setOpen(false);
-		}
+		visible ? setTimeout(() => setOpen(true), 20) : setOpen(false);
 	}, [visible]);
 
-	if (!alert) return null;
+	if (!alert) {
+		return null;
+	}
 
 	const handleClose = () => {
 		setOpen(false);
@@ -31,12 +30,11 @@ export const Alert = () => {
 				className={`alert-body ${alert.type || "danger"} ${open ? "show" : "hide"}`}
 			>
 				<p className="title">{alert.message}</p>
-				<button
-					className={`${alert.type || "danger"}-button`}
+				<Button
+					type={alert.type || "danger"}
 					onClick={handleClose}
-				>
-					شروع دوباره
-				</button>
+					title={alert.title}
+				/>
 			</div>
 		</div>
 	);

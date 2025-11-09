@@ -1,6 +1,8 @@
 :root {
 	--primary: #e8d1a9;
+	--light-primary: #e8d1a929;
 	--danger: #e03131;
+	--success: green;
 }
 
 .tajawal-regular {

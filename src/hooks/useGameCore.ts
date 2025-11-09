@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { generateRandomTiles } from "../utils";
 import type { TileType } from "../constants";
 import { useTimer, useStartGame } from "../hooks";
-import { GAME_CONFIG } from "../config";
+import { GAME_CONFIG, MESSAGES } from "../config";
 import { createClickLimitAction } from "../actions/createClickLimitAction";
-import { useAlert } from "../context/AlertContex";
+import { useAlert } from "../context";
 
 type TileItem = TileType & { id: number };
 type SelectedTiles = { itemOne: TileItem; itemTwo?: TileItem };
@@ -30,7 +30,7 @@ export function useGameCore(): UseGameReturn {
 
 	const [tiles, setTiles] = useState<TileItem[]>(initialTiles);
 
-	const { startTimer, isFinished, isRunning } = useTimer(
+	const { startTimer, isFinished, isRunning, stopTimer } = useTimer(
 		GAME_CONFIG.ALLOWABLE_TIME,
 	);
 
@@ -67,18 +67,37 @@ export function useGameCore(): UseGameReturn {
 
 		setTiles(generateRandomTiles());
 
-		startTimer();
+		setTimeout(() => {
+			startTimer();
+		}, 2000);
 	}, []);
 
 	useEffect(() => {
 		if (isFinished) {
 			showAlert({
-				message: "زمان شما به اتمام رسید",
-				type: "success",
+				message: MESSAGES.END_TIME_ERROR,
+				type: "danger",
 				onConfirm: restartGame,
+				title: MESSAGES.START_AGAIN,
 			});
 		}
 	}, [isFinished]);
+
+	/**
+	 * @description We should show victory alert
+	 */
+	useEffect(() => {
+		if (matchedTiles.length === 16) {
+			showAlert({
+				message: MESSAGES.YOU_WIN,
+				type: "success",
+				onConfirm: restartGame,
+				title: MESSAGES.START_AGAIN,
+			});
+
+			stopTimer();
+		}
+	}, [matchedTiles.length]);
 
 	const isSelectionCorrect = useCallback(
 		(firstIcon: string, secondIcon: string) => firstIcon === secondIcon,
@@ -111,16 +130,15 @@ export function useGameCore(): UseGameReturn {
 		[selectedTiles],
 	);
 
-	
-
 	const isOverClickLimit = () => {
 		if (clickLimitAction.current.isFinished) {
 			showAlert({
-				message: "تعداد حرکات مجاز شما به اتمام رسید",
-				type: "success",
+				message: MESSAGES.CLICK_LIMIT_ERROR,
+				type: "danger",
 				onConfirm: restartGame,
+				title: MESSAGES.START_AGAIN,
 			});
-			
+
 			return true;
 		}
 
@@ -130,6 +148,10 @@ export function useGameCore(): UseGameReturn {
 	const onTileClick = useCallback(
 		(tile: TileItem) => {
 			if (!isRunning || isOverClickLimit()) return;
+
+			if (selectedTiles?.itemOne?.id === tile.id) return;
+
+			if (isItemMatched(tile.id)) return;
 
 			clickCountRef.current += 1;
 
@@ -141,9 +163,6 @@ export function useGameCore(): UseGameReturn {
 			};
 
 			setSelectedTiles((prev) => {
-				/**
-				 * @description This is first selection
-				 */
 				if (!prev?.itemOne) {
 					return { itemOne: tile };
 				}
@@ -156,7 +175,14 @@ export function useGameCore(): UseGameReturn {
 
 			clickLimitAction.current.use();
 		},
-		[isRunning, isSelectionCorrect, resetSelection],
+		[
+			isRunning,
+			isSelectionCorrect,
+			resetSelection,
+			isItemMatched,
+			selectedTiles,
+			isOverClickLimit,
+		],
 	);
 
 	const isTileActive = useCallback(

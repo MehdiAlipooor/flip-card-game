@@ -6,8 +6,6 @@ export interface UseTimerReturn {
 	isFinished: boolean;
 	startTimer: () => void;
 	stopTimer: () => void;
-	pauseTimer: () => void;
-	resumeTimer: () => void;
 }
 
 /**
@@ -20,8 +18,6 @@ export interface UseTimerReturn {
  * - `isFinished`: Whether the timer has completed
  * - `startTimer()`: Starts or restarts the timer
  * - `stopTimer()`: Stops and clears the timer
- * - `pauseTimer()`: Pauses the countdown
- * - `resumeTimer()`: Resumes the countdown
  */
 export function useTimer(initialSeconds: number): UseTimerReturn {
 	const [time, setTime] = useState<number>(initialSeconds);
@@ -55,17 +51,6 @@ export function useTimer(initialSeconds: number): UseTimerReturn {
 		setIsRunning(false);
 	};
 
-	const pauseTimer = () => {
-		clearTimer();
-		setIsRunning(false);
-	};
-
-	const resumeTimer = () => {
-		if (time > 0 && !isFinished) {
-			setIsRunning(true);
-		}
-	};
-
 	useEffect(() => {
 		if (!isRunning) {
 			return;
@@ -92,7 +77,5 @@ export function useTimer(initialSeconds: number): UseTimerReturn {
 		isFinished,
 		startTimer,
 		stopTimer,
-		pauseTimer,
-		resumeTimer,
 	};
 }

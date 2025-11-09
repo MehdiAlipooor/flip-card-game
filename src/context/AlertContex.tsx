@@ -7,6 +7,7 @@ import React, {
 
 interface AlertOptions {
 	message: string;
+	title: string;
 	type?: "danger" | "success";
 	onConfirm?: () => void;
 }
