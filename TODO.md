@@ -1,0 +1,4 @@
+- Create alert component
+- Fix the layout responsive
+- Show the timer
+- Add reset button functionality

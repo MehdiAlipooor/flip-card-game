@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+.main {
+	position: relative;
+}
+
 .body {
 	display: flex;
 	flex-direction: row-reverse;
@@ -18,28 +22,38 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	background: linear-gradient(to left, #e8d1a9 50%, #e8d1a929, transparent);
+	background: linear-gradient(
+		to left,
+		var(--primary) 50%,
+		#e8d1a929,
+		transparent
+	);
 	transition: all ease 1s;
 }
 
-.body.active .control-section{
+.body.active .control-section {
 	transform: translateX(100%);
 	transition: all ease 1s;
 	width: 0;
 	z-index: -100;
 }
 .body.active .control-section p,
-.body.active .control-section button{
+.body.active .control-section button {
 	display: none;
 }
-.body.active::after{
+.body.active::after {
 	content: "";
 	transform: translateX(100%);
 	z-index: 10;
-	background: linear-gradient(to left, #e8d1a9 50%, #e8d1a929, transparent);
+	background: linear-gradient(
+		to left,
+		var(--primary) 50%,
+		#e8d1a929,
+		transparent
+	);
 }
 
-.control-section{
+.control-section {
 	width: 40%;
 	height: 100%;
 	position: relative;
@@ -47,24 +61,24 @@
 	padding-right: 42px;
 }
 
-.inner{
+.inner {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 }
 
-.inner p{
+.inner p {
 	font-size: 42px;
 	columns: #090909;
 }
 
-.body button {
+.danger-button {
 	padding: 12px 42px;
-	border: 1px solid red;
-	border-right: 3px solid red;
-	border-bottom: 3px solid red;
-	color: red;
+	border: 1px solid var(--danger);
+	border-right: 3px solid var(--danger);
+	border-bottom: 3px solid var(--danger);
+	color: var(--danger);
 	background-color: transparent;
 	font-weight: 500;
 	font-size: 24px;

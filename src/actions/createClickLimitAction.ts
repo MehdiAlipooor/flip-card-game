@@ -7,7 +7,7 @@ export function createClickLimitAction(limit: number) {
 		},
 
 		get isFinished() {
-			return remaining <= 0;
+			return remaining === 0;
 		},
 
 		use() {

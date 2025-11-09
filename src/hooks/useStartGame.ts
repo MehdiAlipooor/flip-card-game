@@ -24,5 +24,15 @@ export const useStartGame = (
 		startTimehandler();
 	};
 
-	return { isInitialViewActive, onStart };
+	const onRestart = () => {
+		hideInitialActiveTiles();
+
+		showInitialActiveTiles();
+
+		setTimeout(() => {
+			hideInitialActiveTiles();
+		}, 3000);
+	};
+
+	return { isInitialViewActive, onStart, onRestart };
 };

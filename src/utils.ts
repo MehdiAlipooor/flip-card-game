@@ -1,9 +1,9 @@
-import { type Tile, tiles } from "./constants";
+import { type TileType, tiles } from "./constants";
 
 export function generateRandomTiles() {
 	const randomTiles = [...shuffle(tiles), ...shuffle(tiles)];
 
-	const appendRandomId = randomTiles.map((item: Tile) => {
+	const appendRandomId = randomTiles.map((item: TileType) => {
 		return {
 			id: Math.random(),
 			icon: item.icon,
@@ -13,7 +13,11 @@ export function generateRandomTiles() {
 	return appendRandomId;
 }
 
-function shuffle(array: Tile[]) {
+/**
+ *
+ * @description Generate a randow result of input array
+ */
+function shuffle(array: TileType[]) {
 	const initialTiles = array;
 
 	let currentIndex = array.length;

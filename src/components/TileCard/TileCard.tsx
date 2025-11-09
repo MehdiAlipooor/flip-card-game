@@ -1,4 +1,4 @@
-import "./tiles.css";
+import "./styles.css";
 
 interface Props {
 	onClick: () => void;
@@ -14,7 +14,6 @@ export function TileCard({ onClick, isActive, icon, isDisabled }: Props) {
 			onClick={() => !isDisabled && onClick()}
 		>
 			<div className="tile-face tile-back" />
-
 			<div className="tile-face tile-front">
 				<img src={icon} alt="tile icon" />
 			</div>

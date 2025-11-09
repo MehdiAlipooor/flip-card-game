@@ -4,6 +4,7 @@ import type { TileType } from "../constants";
 import { useTimer, useStartGame } from "../hooks";
 import { GAME_CONFIG } from "../config";
 import { createClickLimitAction } from "../actions/createClickLimitAction";
+import { useAlert } from "../context/AlertContex";
 
 type TileItem = TileType & { id: number };
 type SelectedTiles = { itemOne: TileItem; itemTwo?: TileItem };
@@ -21,29 +22,61 @@ export interface UseGameReturn {
 	isTileActive: (index: number) => boolean;
 	isTileDisabled: (icon: string) => boolean;
 	handleStart: () => void;
+	restartGame: () => void;
 }
 
 export function useGameCore(): UseGameReturn {
-	const tiles = useMemo(() => generateRandomTiles(), []);
+	const initialTiles = useMemo(() => generateRandomTiles(), []);
+
+	const [tiles, setTiles] = useState<TileItem[]>(initialTiles);
 
 	const { startTimer, isFinished, isRunning } = useTimer(
 		GAME_CONFIG.ALLOWABLE_TIME,
 	);
 
-	const { isInitialViewActive, onStart } = useStartGame(isRunning, startTimer);
+	const { showAlert } = useAlert();
+
+	const {
+		isInitialViewActive,
+		onStart,
+		onRestart: onRestartInitalView,
+	} = useStartGame(isRunning, startTimer);
 
 	const [matchedTiles, setMatchedTiles] = useState<MatchedPair[]>([]);
 	const [selectedTiles, setSelectedTiles] = useState<SelectedTiles | null>(
 		null,
 	);
+
 	const clickCountRef = useRef(0);
 	const clickLimitAction = useRef(
 		createClickLimitAction(GAME_CONFIG.POSSIBLE_ACTIONS),
 	);
 
+	const isGameFinished = useMemo(
+		() => clickLimitAction.current.isFinished || isFinished,
+		[clickLimitAction.current.isFinished, isFinished],
+	);
+
+	const restartGame = useCallback(() => {
+		setSelectedTiles(null);
+		setMatchedTiles([]);
+
+		onRestartInitalView();
+
+		clickLimitAction.current.reset();
+
+		setTiles(generateRandomTiles());
+
+		startTimer();
+	}, []);
+
 	useEffect(() => {
 		if (isFinished) {
-			alert("Time is finished!");
+			showAlert({
+				message: "زمان شما به اتمام رسید",
+				type: "success",
+				onConfirm: restartGame,
+			});
 		}
 	}, [isFinished]);
 
@@ -78,9 +111,16 @@ export function useGameCore(): UseGameReturn {
 		[selectedTiles],
 	);
 
+	
+
 	const isOverClickLimit = () => {
 		if (clickLimitAction.current.isFinished) {
-			alert("Allowed clicks finished");
+			showAlert({
+				message: "تعداد حرکات مجاز شما به اتمام رسید",
+				type: "success",
+				onConfirm: restartGame,
+			});
+			
 			return true;
 		}
 
@@ -145,11 +185,12 @@ export function useGameCore(): UseGameReturn {
 		selectedTiles,
 		clickCount: clickCountRef.current,
 		isRunning,
-		isFinished,
+		isFinished: isGameFinished,
 		isInitialViewActive,
 		onTileClick,
 		isTileActive,
 		isTileDisabled,
 		handleStart,
+		restartGame,
 	};
 }

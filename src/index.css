@@ -1,8 +1,12 @@
+:root {
+	--primary: #e8d1a9;
+	--danger: #e03131;
+}
 
 .tajawal-regular {
-  font-family: "Tajawal", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+	font-family: "Tajawal", sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 body {
@@ -13,9 +17,8 @@ body {
 
 * {
 	box-sizing: border-box;
-	font-family: "Tajawal", sans-serif!important;
+	font-family: "Tajawal", sans-serif !important;
 }
-
 
 .body {
 	max-width: 100%;
