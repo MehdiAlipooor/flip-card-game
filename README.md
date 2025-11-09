@@ -1,6 +1,6 @@
 ### Flip Card App
 
-Create in a vite environment using React.js and Typescript
+Created in a vite environment using React.js and Typescript
 
 
 ## Config
