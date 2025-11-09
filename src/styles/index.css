@@ -1,3 +1,34 @@
+:root {
+	--primary: #e8d1a9;
+	--light-primary: #e8d1a929;
+	--danger: #e03131;
+	--success: green;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background-color: #e8d1a929;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: "Noto Sans Arabic", sans-serif !important;
+}
+
+.body {
+	max-width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	margin: 0;
+}
+
+
 #root {
 	margin: 0 auto;
 	padding: 0;
@@ -58,16 +89,20 @@
 	position: relative;
 	z-index: 100;
 }
-.status{
+.control-section p {
+	text-align: right;
+}
+.status {
 	padding-right: 32px;
 }
-.status, .status li{
+.status,
+.status li {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.status li{
+.status li {
 	gap: 12px;
 	font-size: 18px;
 }

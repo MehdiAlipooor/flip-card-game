@@ -37,10 +37,8 @@ export function useGameCore(): UseGameReturn {
 
 	const [tiles, setTiles] = useState<TileItem[]>(initialTiles);
 
-	const { startTimer, isFinished, restartTimer, isRunning, stopTimer, time } = useTimer(
-		GAME_CONFIG.ALLOWABLE_TIME,
-		TIMER_DELAY
-	);
+	const { startTimer, isFinished, restartTimer, isRunning, stopTimer, time } =
+		useTimer(GAME_CONFIG.ALLOWABLE_TIME, TIMER_DELAY);
 
 	const { showAlert } = useAlert();
 
@@ -74,23 +72,23 @@ export function useGameCore(): UseGameReturn {
 		clickLimitAction.current.reset();
 
 		setTiles(generateRandomTiles());
-		
+
 		stopTimer();
-		
+
 		setTimeout(() => {
-			restartTimer()
+			restartTimer();
 		}, TIMER_DELAY);
 	}, []);
 
 	useEffect(() => {
 		if (isFinished) {
-			stopTimer()
+			stopTimer();
 
 			showAlert({
 				message: MESSAGES.END_TIME_ERROR,
 				type: "danger",
 				onConfirm: () => {
-					restartGame()
+					restartGame();
 				},
 				title: MESSAGES.START_AGAIN,
 			});
@@ -102,13 +100,13 @@ export function useGameCore(): UseGameReturn {
 	 */
 	useEffect(() => {
 		if (matchedTiles.length === 16) {
-			stopTimer()
+			stopTimer();
 
 			showAlert({
 				message: MESSAGES.YOU_WIN,
 				type: "success",
 				onConfirm: () => {
-					restartGame()
+					restartGame();
 				},
 				title: MESSAGES.START_AGAIN,
 			});
@@ -150,8 +148,8 @@ export function useGameCore(): UseGameReturn {
 
 	const isOverClickLimit = () => {
 		if (clickLimitAction.current.isFinished) {
-			stopTimer()
-			
+			stopTimer();
+
 			showAlert({
 				message: MESSAGES.CLICK_LIMIT_ERROR,
 				type: "danger",
@@ -168,7 +166,7 @@ export function useGameCore(): UseGameReturn {
 	const onTileClick = useCallback(
 		(tile: TileItem) => {
 			if (!isRunning || isOverClickLimit()) return;
-			
+
 			if (selectedTiles?.itemOne?.id === tile.id) return;
 			if (isItemMatched(tile.id)) return;
 
@@ -238,6 +236,6 @@ export function useGameCore(): UseGameReturn {
 		restartGame,
 
 		time,
-		clickCount: clickLimitAction.current.remaining
+		clickCount: clickLimitAction.current.remaining,
 	};
 }

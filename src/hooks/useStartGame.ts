@@ -7,6 +7,7 @@ export const useStartGame = (
 	const [isInitialViewActive, setIsInitialViewActive] = useState(false);
 
 	const showInitialActiveTiles = () => setIsInitialViewActive(true);
+	
 	const hideInitialActiveTiles = () => {
 		setTimeout(() => {
 			setIsInitialViewActive(false);

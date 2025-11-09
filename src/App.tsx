@@ -1,51 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import "./App.css";
-import { Alert, Button, TileCard } from "./components";
-import type { TileType } from "./constants";
-import { useGameCore } from "./hooks/useGameCore";
-
-type TileItem = TileType & { id: number };
+import { useRef, useState } from "react";
+import { Alert, Button, FlipCard, type FlipCardRef } from "./components";
 
 function App() {
 	const [isGameStarted, setIsGameStarted] = useState(false);
 
-	const {
-		tiles,
-		onTileClick,
-		isTileActive,
-		isFinished,
-		isTileDisabled,
-		handleStart,
-		isInitialViewActive,
-		time,
-		clickCount,
-		selectedTiles,
-		matchedTiles
-	} = useGameCore();
-
-	useEffect(() => {
-		if (!isFinished) {
-			return;
-		}
-	}, [isFinished]);
-
-	const renderTileItem = useCallback((tile: TileItem, index: number) => {
-		return (
-			<TileCard
-				key={index}
-				icon={tile.icon}
-				isActive={isTileActive(index)}
-				isDisabled={isTileDisabled(tile.icon) || isInitialViewActive}
-				onClick={() => onTileClick({ ...tile, id: index })}
-			/>
-		);
-	},[isInitialViewActive, selectedTiles, matchedTiles, isFinished])
-
-	const tilesList = tiles.map(renderTileItem);
+	const flipCardRef = useRef<FlipCardRef>(null);
 
 	const onStartClick = () => {
 		setIsGameStarted(true);
-		setTimeout(() => handleStart(), 2000);
+		setTimeout(() => {
+			flipCardRef.current?.start();
+		}, 2000);
 	};
 
 	return (
@@ -55,27 +20,11 @@ function App() {
 				<div className="control-section">
 					<div className="inner">
 						<p>به بازی کارت ها خوش اومدی</p>
-						<Button
-							title={isFinished ? "بازی دوباره" : "شروع بازی"}
-							onClick={onStartClick}
-							type="danger"
-						/>
+						<Button title={"شروع بازی"} onClick={onStartClick} type="danger" />
 					</div>
 				</div>
 				<div className="wrapper">
-						<ul className="status">
-							<li>
-								<p>{time}</p>
-								<p>زمان</p>
-							</li>
-							<li>
-								<p>{clickCount}</p>
-								<p>تعداد حرکات مجاز</p>
-							</li>
-						</ul>
-					<div className="wrapper-grid">
-						{tilesList}
-					</div>
+					<FlipCard ref={flipCardRef}/>
 				</div>
 			</div>
 		</div>

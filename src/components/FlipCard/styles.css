@@ -1,0 +1,18 @@
+.wrapper .wrapper-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	gap: 12px;
+	width: min(90vw, 90vh);
+	aspect-ratio: 1 / 1;
+}
+
+.wrapper .wrapper-grid {
+	width: min(90vw, 80vh);
+	aspect-ratio: 1 / 1;
+	margin: auto;
+	box-sizing: border-box;
+	margin: 0 auto;
+	box-sizing: border-box;
+	max-width: 90%;
+}
