@@ -58,6 +58,19 @@
 	position: relative;
 	z-index: 100;
 }
+.status{
+	padding-right: 32px;
+}
+.status, .status li{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.status li{
+	gap: 12px;
+	font-size: 18px;
+}
 
 @media (max-width: 800px) {
 	.body {

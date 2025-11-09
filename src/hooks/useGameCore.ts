@@ -23,15 +23,23 @@ export interface UseGameReturn {
 	isTileDisabled: (icon: string) => boolean;
 	handleStart: () => void;
 	restartGame: () => void;
+
+	/**
+	 * @description remaining count down time
+	 */
+	time: number;
 }
+
+const TIMER_DELAY = 3000;
 
 export function useGameCore(): UseGameReturn {
 	const initialTiles = useMemo(() => generateRandomTiles(), []);
 
 	const [tiles, setTiles] = useState<TileItem[]>(initialTiles);
 
-	const { startTimer, isFinished, isRunning, stopTimer } = useTimer(
+	const { startTimer, isFinished, restartTimer, isRunning, stopTimer, time } = useTimer(
 		GAME_CONFIG.ALLOWABLE_TIME,
+		TIMER_DELAY
 	);
 
 	const { showAlert } = useAlert();
@@ -66,18 +74,24 @@ export function useGameCore(): UseGameReturn {
 		clickLimitAction.current.reset();
 
 		setTiles(generateRandomTiles());
-
+		
+		stopTimer();
+		
 		setTimeout(() => {
-			startTimer();
-		}, 2000);
+			restartTimer()
+		}, TIMER_DELAY);
 	}, []);
 
 	useEffect(() => {
 		if (isFinished) {
+			stopTimer()
+
 			showAlert({
 				message: MESSAGES.END_TIME_ERROR,
 				type: "danger",
-				onConfirm: restartGame,
+				onConfirm: () => {
+					restartGame()
+				},
 				title: MESSAGES.START_AGAIN,
 			});
 		}
@@ -88,10 +102,14 @@ export function useGameCore(): UseGameReturn {
 	 */
 	useEffect(() => {
 		if (matchedTiles.length === 16) {
+			stopTimer()
+
 			showAlert({
 				message: MESSAGES.YOU_WIN,
 				type: "success",
-				onConfirm: restartGame,
+				onConfirm: () => {
+					restartGame()
+				},
 				title: MESSAGES.START_AGAIN,
 			});
 
@@ -132,6 +150,8 @@ export function useGameCore(): UseGameReturn {
 
 	const isOverClickLimit = () => {
 		if (clickLimitAction.current.isFinished) {
+			stopTimer()
+			
 			showAlert({
 				message: MESSAGES.CLICK_LIMIT_ERROR,
 				type: "danger",
@@ -148,9 +168,8 @@ export function useGameCore(): UseGameReturn {
 	const onTileClick = useCallback(
 		(tile: TileItem) => {
 			if (!isRunning || isOverClickLimit()) return;
-
+			
 			if (selectedTiles?.itemOne?.id === tile.id) return;
-
 			if (isItemMatched(tile.id)) return;
 
 			clickCountRef.current += 1;
@@ -209,7 +228,6 @@ export function useGameCore(): UseGameReturn {
 		tiles,
 		matchedTiles,
 		selectedTiles,
-		clickCount: clickCountRef.current,
 		isRunning,
 		isFinished: isGameFinished,
 		isInitialViewActive,
@@ -218,5 +236,8 @@ export function useGameCore(): UseGameReturn {
 		isTileDisabled,
 		handleStart,
 		restartGame,
+
+		time,
+		clickCount: clickLimitAction.current.remaining
 	};
 }

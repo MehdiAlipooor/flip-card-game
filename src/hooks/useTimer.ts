@@ -1,81 +1,84 @@
 import { useEffect, useRef, useState } from "react";
 
 export interface UseTimerReturn {
-	time: number;
-	isRunning: boolean;
-	isFinished: boolean;
-	startTimer: () => void;
-	stopTimer: () => void;
+  time: number;
+  isRunning: boolean;
+  isFinished: boolean;
+  startTimer: () => void;
+  stopTimer: () => void;
+  restartTimer: () => void;
 }
 
-/**
- *
- * @param initialSeconds number, just in second
- *
- * **Returned object:**
- * - `time`: Current remaining time in seconds
- * - `isRunning`: Whether the timer is running
- * - `isFinished`: Whether the timer has completed
- * - `startTimer()`: Starts or restarts the timer
- * - `stopTimer()`: Stops and clears the timer
- */
-export function useTimer(initialSeconds: number): UseTimerReturn {
-	const [time, setTime] = useState<number>(initialSeconds);
-	const [isRunning, setIsRunning] = useState<boolean>(false);
-	const [isFinished, setIsFinished] = useState<boolean>(false);
+export function useTimer(initialSeconds: number, delay = 0): UseTimerReturn {
+  const [time, setTime] = useState<number>(initialSeconds);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
-	/**
-	 * @description I changed the interval variable(which were defined outside of component)
-	 * to a ref, so we can use this hook multiple times without any bug
-	 */
-	const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-	const clearTimer = () => {
-		if (!intervalRef.current) {
-			return;
-		}
+  const clearTimer = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
 
-		clearInterval(intervalRef.current);
-		intervalRef.current = null;
-	};
+  const startCountdown = () => {
+    clearTimer();
 
-	const startTimer = () => {
-		clearTimer();
-		setTime(initialSeconds);
-		setIsFinished(false);
-		setIsRunning(true);
-	};
+    intervalRef.current = setInterval(() => {
+      setTime((prev) => {
+        if (prev <= 1) {
+          clearTimer();
+          setIsRunning(false);
+          setIsFinished(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
-	const stopTimer = () => {
-		clearTimer();
-		setIsRunning(false);
-	};
+  const startTimer = () => {
+    clearTimer();
+    if (delay > 0) {
+      setTimeout(() => {
+        setTime(initialSeconds);
+        setIsFinished(false);
+        setIsRunning(true);
+        startCountdown();
+      }, delay);
+    } else {
+      setTime(initialSeconds);
+      setIsFinished(false);
+      setIsRunning(true);
+      startCountdown();
+    }
+  };
 
-	useEffect(() => {
-		if (!isRunning) {
-			return;
-		}
+  const restartTimer = () => {
+    clearTimer();
+    setTime(initialSeconds);
+    setIsFinished(false);
+    setIsRunning(true);
+    startCountdown();
+  };
 
-		intervalRef.current = setInterval(() => {
-			setTime((prev) => {
-				if (prev <= 1) {
-					clearTimer();
-					setIsRunning(false);
-					setIsFinished(true);
-					return 0;
-				}
-				return prev - 1;
-			});
-		}, 1000);
+  const stopTimer = () => {
+    clearTimer();
+    setIsRunning(false);
+  };
 
-		return () => clearTimer();
-	}, [isRunning]);
+  useEffect(() => {
+    return () => clearTimer();
+  }, []);
 
-	return {
-		time,
-		isRunning,
-		isFinished,
-		startTimer,
-		stopTimer,
-	};
+  return {
+    time,
+    isRunning,
+    isFinished,
+    startTimer,
+    stopTimer,
+    restartTimer,
+  };
 }

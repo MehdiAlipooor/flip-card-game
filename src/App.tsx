@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import { Alert, Button, TileCard } from "./components";
 import type { TileType } from "./constants";
@@ -17,6 +17,10 @@ function App() {
 		isTileDisabled,
 		handleStart,
 		isInitialViewActive,
+		time,
+		clickCount,
+		selectedTiles,
+		matchedTiles
 	} = useGameCore();
 
 	useEffect(() => {
@@ -25,7 +29,7 @@ function App() {
 		}
 	}, [isFinished]);
 
-	const renderTileItem = (tile: TileItem, index: number) => {
+	const renderTileItem = useCallback((tile: TileItem, index: number) => {
 		return (
 			<TileCard
 				key={index}
@@ -35,7 +39,7 @@ function App() {
 				onClick={() => onTileClick({ ...tile, id: index })}
 			/>
 		);
-	};
+	},[isInitialViewActive, selectedTiles, matchedTiles, isFinished])
 
 	const tilesList = tiles.map(renderTileItem);
 
@@ -58,7 +62,21 @@ function App() {
 						/>
 					</div>
 				</div>
-				<div className="wrapper">{tilesList}</div>
+				<div className="wrapper">
+						<ul className="status">
+							<li>
+								<p>{time}</p>
+								<p>زمان</p>
+							</li>
+							<li>
+								<p>{clickCount}</p>
+								<p>تعداد حرکات مجاز</p>
+							</li>
+						</ul>
+					<div className="wrapper-grid">
+						{tilesList}
+					</div>
+				</div>
 			</div>
 		</div>
 	);

@@ -2,7 +2,7 @@
 	--tiles-wrapper-gap: 12px;
 }
 
-.wrapper {
+.wrapper .wrapper-grid{
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(4, 1fr);
@@ -11,7 +11,7 @@
 	aspect-ratio: 1 / 1;
 }
 
-.wrapper {
+.wrapper .wrapper-grid{
 	width: min(90vw, 80vh);
 	aspect-ratio: 1 / 1;
 	margin: auto;
